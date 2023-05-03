@@ -25,24 +25,24 @@ namespace Capstone
     {
         public class MainMenu
         {
-            
-            
+
+
             public static void Main()
             {
-                
+
                 Console.WriteLine("Please enter the directory of the Beige Files.");
                 //string projPath = Console.ReadLine();
 
                 string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
 
                 //Console.WriteLine(projFile[0]);
-                
+
                 Console.WriteLine("Menu:" +
                     "\n 1. All Projects" +
                     "\n 2. Singular ID"
                     );
 
-                int projMainMenuOpt = int.Parse(Console.ReadLine());    
+                int projMainMenuOpt = int.Parse(Console.ReadLine());
 
                 if (projMainMenuOpt == 1)
                 {
@@ -54,14 +54,14 @@ namespace Capstone
                     singularID.singId();
                 }
 
-                else 
+                else
                 { Console.WriteLine(); }
 
             }
         }
         public class allProjects
         {
-            public static void allProj() 
+            public static void allProj()
             {
                 string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
 
@@ -81,7 +81,7 @@ namespace Capstone
         }
         public class singularID
         {
-            public static void singId() 
+            public static void singId()
             {
                 string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
                 int projLineCount = 0;
@@ -95,8 +95,8 @@ namespace Capstone
                 //int projChosenType = int.Parse(Console.ReadLine());
                 //Console.WriteLine("ID".PadLeft(0) + "Type".PadLeft(10) + "Amount".PadLeft(10));
                 List<string> allProjId = new List<string>();
-
-                while (projLineCount < projFile.Length) 
+                Console.WriteLine("Please Choose From the Following IDs:");
+                while (projLineCount < projFile.Length)
                 {
 
                     string projLine = projFile[projLineCount];
@@ -104,12 +104,12 @@ namespace Capstone
                     string projIDs = projLineSplit[0];
 
                     if (allProjId.Contains(projLineSplit[0]))
-                       
+
                     {
                         projLineCount++;
                         //Console.WriteLine("Already in");
                     }
-                    else 
+                    else
                     {
                         allProjId.Add(projIDs);
 
@@ -128,9 +128,62 @@ namespace Capstone
                     Console.WriteLine(line);
                 }
 
+                string chosenID = Console.ReadLine();
+
+                float IDSales = 0;
+                float IDPurchases = 0;
+                float IDRefund = 0;
+                int IDChecker = 0;
+
+                while (IDChecker < projFile.Length) 
+                {
+                    string projLine = projFile[IDChecker];
+                    string[] projLineSplit = projLine.Split(",");
+                    string projIDs = projLineSplit[0];
+                    string projType = projLineSplit[1];
+                    string projAmount = projLineSplit[2];
+                    float projAmountParsed = float.Parse(projAmount);
+
+                    if (projIDs == chosenID)
+                    {
+                        IDChecker++;
+                        if (projType == "L") 
+                        {
+                            IDPurchases = IDPurchases + projAmountParsed;
+                        }
+                        if (projType == "P")
+                        {
+                            IDPurchases = IDPurchases + projAmountParsed;
+                        }
+                        if (projType == "S")
+                        {
+                            IDSales = IDSales + projAmountParsed;
+                        }
+                        if (projType == "R")
+                        {
+                            IDRefund = IDRefund + projAmountParsed;
+                        }
+                    }
+                    else 
+                    {
+                        IDChecker++;
+                    }
+                }
+                float IDProfit = IDSales - (IDPurchases + IDRefund);
+
+                IDSales.ToString("0.00");
+
+                Console.WriteLine("" +
+                    "\n");
+                Console.WriteLine("ID".PadLeft(0) + "Sales".PadLeft(8) + "Purchases".PadLeft(12) + "Refunds".PadLeft(10) + "Profit".PadLeft(10));
+                Console.WriteLine(chosenID.PadLeft(0) +"   " + IDSales + "   " + IDPurchases + "    " + IDRefund + "       " + IDProfit);
+                 
+
+
+
             }
-        }           
+        }
 
     }
-        
+
 }
