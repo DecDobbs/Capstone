@@ -4,6 +4,7 @@ using System.IO;
 using System.ComponentModel.Design;
 using Capstone;
 using System.Security.Cryptography.X509Certificates;
+using System.Runtime.CompilerServices;
 
 // Recognising i am pulling data from a saved file on the system, i must use System.IO to access these.
 
@@ -34,12 +35,12 @@ namespace Capstone
 
                 string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
 
-                Console.WriteLine(projFile[0]);
+                //Console.WriteLine(projFile[0]);
                 
                 Console.WriteLine("Menu:" +
                     "\n 1. All Projects" +
-                    "\n 2. Singular ID" +
-                    "\n 3. Singular Type");
+                    "\n 2. Singular ID"
+                    );
 
                 int projMainMenuOpt = int.Parse(Console.ReadLine());    
 
@@ -51,10 +52,6 @@ namespace Capstone
                 else if (projMainMenuOpt == 2)
                 {
                     singularID.singId();
-                }
-                else if (projMainMenuOpt == 3)
-                {
-                    singularType.singType();
                 }
 
                 else 
@@ -82,21 +79,57 @@ namespace Capstone
             }
 
         }
-        public class singularType
+        public class singularID
         {
-            public static void singType() 
-            { 
-
-            }
-        }
-        public class singularID 
-        {
-            public static void singId()
+            public static void singId() 
             {
+                string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
+                int projLineCount = 0;
+                int IDLineCount = 0;
+                // Console.WriteLine("Which Type would you like to view?" +
+                // "\n1. Sales" +
+                // "\n2. Refunds" +
+                // "\n3. Purchases" +
+                //"\n4. Lands");
+
+                //int projChosenType = int.Parse(Console.ReadLine());
+                //Console.WriteLine("ID".PadLeft(0) + "Type".PadLeft(10) + "Amount".PadLeft(10));
+                List<string> allProjId = new List<string>();
+
+                while (projLineCount < projFile.Length) 
+                {
+
+                    string projLine = projFile[projLineCount];
+                    string[] projLineSplit = projLine.Split(",");
+                    string projIDs = projLineSplit[0];
+
+                    if (allProjId.Contains(projLineSplit[0]))
+                       
+                    {
+                        projLineCount++;
+                        //Console.WriteLine("Already in");
+                    }
+                    else 
+                    {
+                        allProjId.Add(projIDs);
+
+                        IDLineCount++;
+                        projLineCount++;
+                        //Console.WriteLine("Added in a Value");
+                        //Console.WriteLine(allProjId[0]);
+
+                    }
+                }
+                Console.WriteLine("ID".PadLeft(0));
+
+                //Console.WriteLine(allProjId[0]);
+                foreach (string line in allProjId)
+                {
+                    Console.WriteLine(line);
+                }
 
             }
-        }
-            
+        }           
 
     }
         
