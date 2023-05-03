@@ -32,7 +32,7 @@ namespace Capstone
 
                 Console.WriteLine("Please enter the directory of the Beige Files.");
                 //string projPath = Console.ReadLine();
-
+                
                 string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
 
                 //Console.WriteLine(projFile[0]);
@@ -56,58 +56,56 @@ namespace Capstone
 
                 else
                 { Console.WriteLine(); }
-
+                // Present a choice to user on what they want to look at, then call a variable from a seperate class that does what is asked
             }
         }
         public class allProjects
-        {
+        { //create a new class for checking over all the projects on the list
             public static void allProj()
             {
                 string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
-
+                // read file
                 int projLineCount = 0;
-                Console.WriteLine("ID".PadLeft(0) + "Type".PadLeft(10) + "Amount".PadLeft(10));
+                // create counter for iteration
+                Console.WriteLine("ID".PadLeft(0) + "Type".PadLeft(10) + "Amount".PadLeft(10)); 
+                // display a table 
                 while (projLineCount < projFile.Length)
                 {
                     string projLine = projFile[projLineCount];
                     string[] projLineSplit = projLine.Split(',');
-
+                    // Split the lines of the project file into each section divided by commas
                     Console.WriteLine(projLineSplit[0].PadLeft(0) + projLineSplit[1].PadLeft(10) + projLineSplit[2].PadLeft(10));
+                    // Print out in the correct order, padded for formatting
                     projLineCount++;
+                    // Add 1 to counter to progress the iteration
                 }
 
             }
 
         }
         public class singularID
-        {
+        {// Create new class for viewing specific IDs
             public static void singId()
-            {
+            { // New Method to be called in Main()
                 string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
                 int projLineCount = 0;
                 int IDLineCount = 0;
-                // Console.WriteLine("Which Type would you like to view?" +
-                // "\n1. Sales" +
-                // "\n2. Refunds" +
-                // "\n3. Purchases" +
-                //"\n4. Lands");
-
-                //int projChosenType = int.Parse(Console.ReadLine());
-                //Console.WriteLine("ID".PadLeft(0) + "Type".PadLeft(10) + "Amount".PadLeft(10));
+                // Load Files, New Counters for the method
                 List<string> allProjId = new List<string>();
+                // Empty List to add to in iteration, used to store all Project IDs, once per copy only
                 Console.WriteLine("Please Choose From the Following IDs:");
                 while (projLineCount < projFile.Length)
                 {
-
+                    // Start the count
                     string projLine = projFile[projLineCount];
                     string[] projLineSplit = projLine.Split(",");
                     string projIDs = projLineSplit[0];
-
+                    // Split into seperate entities and single out the ID Line
                     if (allProjId.Contains(projLineSplit[0]))
-
+                        // Check if the List already contains the ID
                     {
                         projLineCount++;
-                        //Console.WriteLine("Already in");
+                        //if it does, Just go to the next line
                     }
                     else
                     {
@@ -115,35 +113,42 @@ namespace Capstone
 
                         IDLineCount++;
                         projLineCount++;
-                        //Console.WriteLine("Added in a Value");
-                        //Console.WriteLine(allProjId[0]);
+                       //If not, add it to the list, then go to next line and add a counter
 
                     }
                 }
                 Console.WriteLine("ID".PadLeft(0));
 
-                //Console.WriteLine(allProjId[0]);
+                
                 foreach (string line in allProjId)
                 {
                     Console.WriteLine(line);
                 }
 
                 string chosenID = Console.ReadLine();
+                
+                // The above segment prints out every ID on the program in a table
+                // Then the user can choose one
+                // This is Future-Proof since any IDs added in future can then automatically be added to the table.
 
                 float IDSales = 0;
                 float IDPurchases = 0;
                 float IDRefund = 0;
                 int IDChecker = 0;
 
+
+                // create empty values for the Sales Purchases and refunds
+
                 while (IDChecker < projFile.Length) 
                 {
+                    // Iterate
                     string projLine = projFile[IDChecker];
                     string[] projLineSplit = projLine.Split(",");
                     string projIDs = projLineSplit[0];
                     string projType = projLineSplit[1];
                     string projAmount = projLineSplit[2];
                     float projAmountParsed = float.Parse(projAmount);
-
+                    //
                     if (projIDs == chosenID)
                     {
                         IDChecker++;
