@@ -56,7 +56,7 @@ namespace Capstone
                 }
                 else if (projMainMenuOpt == 4)
                 {
-                    addTransaction.addTrans();
+                    addProject.addProj();
                 }
                 else if (projMainMenuOpt == 5)
                 {
@@ -97,41 +97,43 @@ namespace Capstone
         {// Create new class for viewing specific IDs
             public static void singId()
             { // New Method to be called in Main()
-                Console.WriteLine("Please enter the directory of the Beige Files.");
-                string projPath = Console.ReadLine();
-                string[] projFile = File.ReadAllLines(@projPath);
-                int projLineCount = 0;
-                int IDLineCount = 0;
-                // Load Files, New Counters for the method
-                List<string> allProjId = new List<string>();
-                // Empty List to add to in iteration, used to store all Project IDs, once per copy only
-                Console.WriteLine("Please Choose From the Following IDs:");
-                while (projLineCount < projFile.Length)
-                {
-                    // Start the count
-                    string projLine = projFile[projLineCount];
-                    string[] projLineSplit = projLine.Split(",");
-                    string projIDs = projLineSplit[0];
-                    // Split into seperate entities and single out the ID Line
-                    if (allProjId.Contains(projLineSplit[0]))
-                    // Check if the List already contains the ID
+
+                    Console.WriteLine("Please enter the directory of the Beige Files.");
+                    string projPath = Console.ReadLine();
+                    string[] projFile = File.ReadAllLines(@projPath);
+                    int projLineCount = 0;
+                    int IDLineCount = 0;
+                    // Load Files, New Counters for the method
+                    List<string> allProjId = new List<string>();
+                    // Empty List to add to in iteration, used to store all Project IDs, once per copy only
+                    Console.WriteLine("Please Choose From the Following IDs:");
+                    while (projLineCount < projFile.Length)
                     {
-                        projLineCount++;
-                        //if it does, Just go to the next line
+                        // Start the count
+                        string projLine = projFile[projLineCount];
+                        string[] projLineSplit = projLine.Split(",");
+                        string projIDs = projLineSplit[0];
+                        // Split into seperate entities and single out the ID Line
+                        if (allProjId.Contains(projLineSplit[0]))
+                        // Check if the List already contains the ID
+                        {
+                            projLineCount++;
+                            //if it does, Just go to the next line
+                        }
+                        else
+                        {
+                            allProjId.Add(projIDs);
+
+                            IDLineCount++;
+                            projLineCount++;
+                            //If not, add it to the list, then go to next line and add a counter
+
+                        }
                     }
-                    else
-                    {
-                        allProjId.Add(projIDs);
+                    Console.WriteLine("ID".PadLeft(0));
+                
 
-                        IDLineCount++;
-                        projLineCount++;
-                        //If not, add it to the list, then go to next line and add a counter
-
-                    }
-                }
-                Console.WriteLine("ID".PadLeft(0));
-
-
+                
                 foreach (string line in allProjId)
                 {
                     Console.WriteLine(line);
@@ -263,17 +265,80 @@ namespace Capstone
             }
         }
 
-        public class addTransaction 
-        {
-            public static void addTrans() 
-            {
-            }
-        }
 
         public class removeProject
         { 
             public static void removeProj() 
             {
+                Console.WriteLine("Please enter the directory of the Beige Files.");
+                string projPath = Console.ReadLine();
+                string[] projFile = File.ReadAllLines(@projPath);
+                int projLineCount = 0;
+                int IDLineCount = 0;
+                // Load Files, New Counters for the method
+                List<string> allProjId = new List<string>();
+                // Empty List to add to in iteration, used to store all Project IDs, once per copy only
+                Console.WriteLine("Please Choose From the Following IDs:");
+                while (projLineCount < projFile.Length)
+                {
+                    // Start the count
+                    string projLine = projFile[projLineCount];
+                    string[] projLineSplit = projLine.Split(",");
+                    string projIDs = projLineSplit[0];
+                    // Split into seperate entities and single out the ID Line
+                    if (allProjId.Contains(projLineSplit[0]))
+                    // Check if the List already contains the ID
+                    {
+                        projLineCount++;
+                        //if it does, Just go to the next line
+                    }
+                    else
+                    {
+                        allProjId.Add(projIDs);
+
+                        IDLineCount++;
+                        projLineCount++;
+                        //If not, add it to the list, then go to next line and add a counter
+
+                    }
+                }
+                Console.WriteLine("ID".PadLeft(0));
+                foreach (string line in allProjId)
+                {
+                    Console.WriteLine(line);
+                }
+
+                string removeProjID = Console.ReadLine();
+                
+                int projLineCount2 = 0;
+                
+
+                List<string> removedList = new List<string>();
+
+                while (projLineCount2 < projFile.Length)
+                {
+                    string projLine = projFile[projLineCount2];
+                    string[] projLineSplit = projLine.Split(",");
+                    string projIDs = projLineSplit[0];
+
+                    if (projIDs.Contains(removeProjID))
+                    {
+
+                    }
+                    else 
+                    {
+                        string lineToAdd = projFile[projLineCount2];
+                        removedList.Add(lineToAdd);
+                    }
+                    projLineCount2++;
+                }
+                foreach (string line in removedList)
+                {
+                    Console.WriteLine(line);
+                }
+                File.WriteAllLines(@projPath, removedList);
+
+                restart.restartMenu();
             }
         }
         public class restart 
