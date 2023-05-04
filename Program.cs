@@ -30,17 +30,14 @@ namespace Capstone
             public static void Main()
             {
 
-                Console.WriteLine("Please enter the directory of the Beige Files.");
-                //string projPath = Console.ReadLine();
-                
-                string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
-
                 //Console.WriteLine(projFile[0]);
 
                 Console.WriteLine("Menu:" +
                     "\n 1. All Projects" +
-                    "\n 2. Singular ID"
-                    );
+                    "\n 2. Singular ID" +
+                    "\n 3. Add a Project" +
+                    "\n 4. Add a transaction to a project" +
+                    "\n 5. Remove a project");
 
                 int projMainMenuOpt = int.Parse(Console.ReadLine());
 
@@ -53,9 +50,20 @@ namespace Capstone
                 {
                     singularID.singId();
                 }
-
+                else if (projMainMenuOpt == 3) 
+                {
+                    addProject.addProj();
+                }
+                else if (projMainMenuOpt == 4)
+                {
+                    addTransaction.addTrans();
+                }
+                else if (projMainMenuOpt == 5)
+                {
+                    removeProject.removeProj();
+                }
                 else
-                { Console.WriteLine(); }
+                {}
                 // Present a choice to user on what they want to look at, then call a variable from a seperate class that does what is asked
             }
         }
@@ -63,11 +71,13 @@ namespace Capstone
         { //create a new class for checking over all the projects on the list
             public static void allProj()
             {
-                string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
+                Console.WriteLine("Please enter the directory of the Beige Files.");
+                string projPath = Console.ReadLine();
+                string[] projFile = File.ReadAllLines(@projPath);
                 // read file
                 int projLineCount = 0;
                 // create counter for iteration
-                Console.WriteLine("ID".PadLeft(0) + "Type".PadLeft(10) + "Amount".PadLeft(10)); 
+                Console.WriteLine("ID".PadLeft(0) + "Type".PadLeft(10) + "Amount".PadLeft(10));
                 // display a table 
                 while (projLineCount < projFile.Length)
                 {
@@ -79,7 +89,7 @@ namespace Capstone
                     projLineCount++;
                     // Add 1 to counter to progress the iteration
                 }
-
+                restart.restartMenu();
             }
 
         }
@@ -87,7 +97,9 @@ namespace Capstone
         {// Create new class for viewing specific IDs
             public static void singId()
             { // New Method to be called in Main()
-                string[] projFile = File.ReadAllLines(@"G:\Capstone.txt");
+                Console.WriteLine("Please enter the directory of the Beige Files.");
+                string projPath = Console.ReadLine();
+                string[] projFile = File.ReadAllLines(@projPath);
                 int projLineCount = 0;
                 int IDLineCount = 0;
                 // Load Files, New Counters for the method
@@ -102,7 +114,7 @@ namespace Capstone
                     string projIDs = projLineSplit[0];
                     // Split into seperate entities and single out the ID Line
                     if (allProjId.Contains(projLineSplit[0]))
-                        // Check if the List already contains the ID
+                    // Check if the List already contains the ID
                     {
                         projLineCount++;
                         //if it does, Just go to the next line
@@ -113,20 +125,20 @@ namespace Capstone
 
                         IDLineCount++;
                         projLineCount++;
-                       //If not, add it to the list, then go to next line and add a counter
+                        //If not, add it to the list, then go to next line and add a counter
 
                     }
                 }
                 Console.WriteLine("ID".PadLeft(0));
 
-                
+
                 foreach (string line in allProjId)
                 {
                     Console.WriteLine(line);
                 }
 
                 string chosenID = Console.ReadLine();
-                
+
                 // The above segment prints out every ID on the program in a table
                 // Then the user can choose one
                 // This is Future-Proof since any IDs added in future can then automatically be added to the table.
@@ -135,11 +147,11 @@ namespace Capstone
                 float IDPurchases = 0;
                 float IDRefund = 0;
                 int IDChecker = 0;
-
+                float IDRenovation = 0;
 
                 // create empty values for the Sales Purchases and refunds
 
-                while (IDChecker < projFile.Length) 
+                while (IDChecker < projFile.Length)
                 {
                     // Iterate
                     string projLine = projFile[IDChecker];
@@ -152,43 +164,136 @@ namespace Capstone
                     if (projIDs == chosenID)
                     {
                         IDChecker++;
-                        if (projType == "L") 
+                        if (projType == "L")
                         {
                             IDPurchases = IDPurchases + projAmountParsed;
+                            Console.WriteLine("Purchases =" +  IDPurchases);
                         }
                         if (projType == "P")
                         {
                             IDPurchases = IDPurchases + projAmountParsed;
+                            Console.WriteLine("Purchases =" + IDPurchases);
                         }
                         if (projType == "S")
                         {
                             IDSales = IDSales + projAmountParsed;
+                            Console.WriteLine("Sales =" + IDSales);
                         }
                         if (projType == "R")
                         {
-                            IDRefund = IDRefund + projAmountParsed;
+                            IDRenovation = IDRenovation + projAmountParsed;
+                            Console.WriteLine("Renovation =" + IDRenovation);
                         }
+
                     }
-                    else 
+                    else
                     {
                         IDChecker++;
                     }
                 }
-                float IDProfit = IDSales - (IDPurchases + IDRefund);
+
+                if (IDSales > 0)
+                {
+                    float taxRefunds = (IDPurchases / 1.2f);   
+                    IDRefund = IDPurchases - taxRefunds;
+                    Console.WriteLine(taxRefunds);
+                    Console.WriteLine(IDRefund);
+
+                }
+                if (IDRenovation > 0) 
+                {
+                    IDPurchases = IDPurchases + IDRenovation;
+                }
+                else
+                {
+                
+                }
+
+                float IDProfit = (IDSales + IDRefund) - (IDPurchases );
+
 
                 IDSales.ToString("0.00");
 
                 Console.WriteLine("" +
                     "\n");
-                Console.WriteLine("ID".PadLeft(0) + "Sales".PadLeft(8) + "Purchases".PadLeft(12) + "Refunds".PadLeft(10) + "Profit".PadLeft(10));
-                Console.WriteLine(chosenID.PadLeft(0) +"   " + IDSales + "   " + IDPurchases + "    " + IDRefund + "       " + IDProfit);
-                 
+                Console.WriteLine("ID".PadLeft(0) + "Sales".PadLeft(10) + "Purchases".PadLeft(13) + "Refunds".PadLeft(10) + "Profit".PadLeft(15));
+                Console.WriteLine(chosenID.PadLeft(0) + "   " + IDSales + "   " + IDPurchases + "    " + IDRefund + "       " + IDProfit);
 
+
+                restart.restartMenu();
 
 
             }
         }
 
+        public class addProject 
+        {
+            public static void addProj() 
+            {
+                Console.WriteLine("Please enter the directory of the Beige Files.");
+                string projPath = Console.ReadLine();
+                string[] projFile = File.ReadAllLines(@projPath);
+
+                Console.WriteLine("Please enter a Project ID");
+                string newProjID = Console.ReadLine();
+
+                Console.WriteLine("Please Enter the Project Type" +
+                    "\nL. Lands" +
+                    "\nS. Sales" +
+                    "\nR. Renovations" +
+                    "\nP. Purchases");
+                string newProjType = Console.ReadLine();
+
+                newProjType = newProjType.ToUpper();
+                // makes sure that L S R P are in upper case in this case
+                Console.WriteLine("Please Enter The Amount Of Money Spent / Received");
+
+                string newProjAmount = Console.ReadLine(); 
+
+                string newProj = newProjID + "," + newProjType + "," + newProjAmount;
+
+                //Console.WriteLine(newProj); used to check if newProj has the correct format
+
+                //projFile.Append(newProj);
+
+                //Console.WriteLine(projFile);
+
+                //File.WriteAllLines(@projPath, projFile);
+                File.AppendAllText(@projPath, newProj);
+            }
+        }
+
+        public class addTransaction 
+        {
+            public static void addTrans() 
+            {
+            }
+        }
+
+        public class removeProject
+        { 
+            public static void removeProj() 
+            {
+            }
+        }
+        public class restart 
+        {
+            public static void restartMenu() 
+            {
+                Console.WriteLine("Would you like to go back to the menu?" +
+                    "\n 1. Yes" +
+                    "\n 2. No");
+                int restartChoice = int.Parse(Console.ReadLine());
+
+                if (restartChoice == 1)
+                {
+                    MainMenu.Main();
+                }
+                else 
+                { 
+                }
+            }
+        }
     }
 
 }
